@@ -1,0 +1,58 @@
+<?php
+
+return [
+    'for_all_devices' => 'for all devices',
+    'channels_movies_sports' => 'channels, movies, sport',
+    'home' => 'home',
+    'contact' => 'contact us',
+    'pricing' => 'pricing',
+    'about' => 'about us',
+    'faq' => 'FAQ',
+    'blog' => 'blog',
+    'best_iptv_subscription' => 'best iptv',
+    'best_iptv_secondary' => 'subscription',
+    'service_description' => 'IPTVdb offers the best IPTV experience with premium channels, live sports, movies, and series. Enjoy beast IPTV with HD streaming, affordable plans, and instant activation on any device.',
+    'watch_in' => 'whatch in',
+    'three_step' => '3 steps',
+    'three_step_description' => 'Simply subscribe, claim your IPTV free trial, and experience the best IPTV streaming on your favorite device.',
+    'get_subscription' => 'get subscription',
+    'get_subscription_des' => 'After purchase, you’ll receive your activation code via email, WhatsApp, or Telegram..',
+    'get_account' => 'get account',
+    'get_account_desc' => 'Download an IPTV app (e.g., Smart IPTV, IPTV Smarters, or TiviMate) on your device.',
+    'enjoy_watching' => 'enjoy watching',
+    'enjoy_watching_desc' => 'Enter the activation code or M3U link in the app and enjoy your content!',
+    'plan_title' => 'Choose Your Best IPTV Plan',
+    'plan_desc' => 'Get the best IPTV service from IPTVdb and enjoy seamless streaming on Smart TVs, mobile devices, tablets, MAG devices, Enigma2, smart receivers, or even your laptop',
+    'about_us' => 'IPTVDB offers the best IPTV experience with global and local channels, perfect for all preferences. Our service ensures smooth streaming with minimal buffering on Smart TVs, mobiles, tablets, laptops, and more. Enjoy fast activation, reliable support, and diverse content including sports, movies, kids’ shows, documentaries, and series. With competitive prices and exceptional quality, IPTVDB guarantees an unmatched viewing experience you can trust and enjoy anytime, anywhere. Choose IPTVDB for the best IPTV service that delivers top-tier entertainment.',
+    'channels_title' => 'worldwide Channels List',
+    'placeholder_keyword' => 'Enter The keyword...',
+    'best_plan' => 'Best Plan',
+    'best_sec_title' => 'we are <span>the best..</span>',
+    'best_sec_description' => 'Choose the best IPTV service for fast streaming, minimal buffering, and thousands of channels. Enjoy a high-definition, reliable viewing experience on any device, anytime.',
+    'best_sec_step_one' => 'Latest Content',
+    'best_sec_step_one_desc' => 'Stay updated with trending movies and series using the best IPTV services and free IPTV trial access',
+    'best_sec_step_two' => 'Smooth Stream',
+    'best_sec_step_two_desc' => 'Enjoy the best IPTV service with high-quality streaming and a free trial, no buffering issues guaranteed',
+    'best_sec_step_three' => '24/7 Support',
+    'best_sec_step_two_three' => 'Get 24/7 support with the best IPTV service for a smooth, hassle-free, and enjoyable experience.',
+    'program_sec_title' => 'sport & <span>matches</span>',
+    'partners_sec_title' => '“ Top Global & <span>Local Channels ”</span>',
+    'partners_sec_desc' => 'Enjoy the best IPTV channels: News, Sports, Kids, Documentaries, Movies, and more!',
+    'faq_sec_title' => '“ Questions? <span>Answers ”</span>',
+    'privacy_title' => 'privacy policy',
+    'our_program_sport_title' => 'Sport & <span>matches</span>',
+    'our_program_sport_des' => 'Watch live sports with Guru IPTV, Falcon IPTV, and the best IPTV service for Reddit users. Enjoy a reliable IPTV free trial anytime.',
+      
+    'our_program_tvshow_title' => 'TV <span>shows</span>',
+    'our_program_tvshow_desc' => 'Stay updated with top TV shows from Apollo Group IPTV and Lemo IPTV. Enjoy the best IPTV service for Firestick devices.',
+      
+    'our_program_documentaries_title' => 'Documentaries',
+    'our_program_documentaries_desc' => 'Explore fascinating documentaries with Apollo IPTV and Falcon IPTV, offering compelling stories on nature, history, and more via IPTV services.',
+      
+    'our_program_kids_title' => 'Kids & <span>channels</span>',
+    'our_program_kids_desc' => 'Keep kids entertained with fun and educational channels from CatchOn IPTV. Safe, enjoyable IPTV content for children of all ages.',
+      
+    'our_program_movies_title' => 'Movies & <span>series</span>',
+    'our_program_movies_desc' => 'Stream the latest movies and series with Boss IPTV and Beast IPTV. Enjoy fresh content with IPTV trials and best IPTV services.'
+
+];
