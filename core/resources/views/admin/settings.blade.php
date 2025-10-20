@@ -3,6 +3,14 @@
 @section('title', 'System Settings')
 
 @section('content')
+    <!-- Modern Page Header -->
+    <div class="page-header-modern">
+        <div class="page-header-title">
+            <div class="page-pretitle">System Configuration</div>
+            <h2>System Settings</h2>
+        </div>
+    </div>
+
     <div class="page-body">
         <div class="container-xl">
             @if (session('success'))
@@ -15,7 +23,7 @@
             @endif
             <div class="row row-cards">
                 <div class="col-12 col-md-8 mb-3">
-                    <form action="{{ route('admin.settings.update') }}" method="POST" class="card"
+                    <form action="{{ route('admin.settings.update') }}" method="POST" class="card-modern"
                         enctype="multipart/form-data">
                         @csrf
                         @method('PUT')

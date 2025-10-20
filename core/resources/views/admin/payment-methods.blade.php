@@ -2,7 +2,15 @@
 @section('title', 'Payment Methods')
 
 @section('content')
-    <div class="page-header d-print-none">
+    <!-- Modern Page Header -->
+    <div class="page-header-modern">
+        <div class="page-header-title">
+            <div class="page-pretitle">System Configuration</div>
+            <h2>Payment Methods Setup</h2>
+        </div>
+    </div>
+
+    <div class="page-body">
         <div class="container-xl">
             @if (session('success'))
                 @include('admin.partials.alerts.success', ['message' => session('success')])
@@ -12,23 +20,13 @@
                     'title' => 'There were some errors with your submission.',
                 ])
             @endif
-            <div class="row g-2 align-items-center">
-                <div class="col">
-                    <h2 class="page-title">Payment Setup</h2>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="page-body">
-        <div class="container-xl">
             <div class="row">
                 <div class="col-xl-4 col-md-5 col-sm-12">
                     <form method="post" action="{{ route('admin.payment-methods.store') }}" enctype="multipart/form-data">
                         @csrf
-                        <div class="card">
-                            <div class="card-header bg-dark-lt pt-3 pb-2">
-                                <h4 class="text-dark">Add Payment Method</h4>
+                        <div class="card-modern">
+                            <div class="card-header">
+                                <h4 class="card-title">Add Payment Method</h4>
                             </div>
                             <div class="card-body pt-2 row">
                                 <!-- Payment Method Name -->
