@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'senypro' => [
+        'api_key' => env('SENYPRO_API_KEY'),
+        'api_secret' => env('SENYPRO_API_SECRET'),
+        'api_base_url' => env('SENYPRO_API_BASE_URL', 'https://senypro.com/api/v1'),
+    ],
+
 ];

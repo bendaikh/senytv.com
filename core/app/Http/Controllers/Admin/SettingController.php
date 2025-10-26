@@ -30,6 +30,11 @@ class SettingController extends Controller
             'whatsapp_dir' => 'required|in:left,center,right',
             'whatsapp_text' => 'nullable|string|max:255',
             'custom_scripts' => 'nullable|string',
+            // SenyPro Payment Gateway Settings
+            'senypro_api_key' => 'nullable|string|max:255',
+            'senypro_api_secret' => 'nullable|string|max:255',
+            'senypro_api_base_url' => 'nullable|url|max:255',
+            'senypro_enabled' => 'required|in:0,1',
         ]);
 
 

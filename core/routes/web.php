@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\FrontendManagementController;
 use App\Http\Controllers\Admin\ChannelsListController;
 use App\Http\Controllers\TosViewerController;
+use App\Http\Controllers\PaymentController;
 
 
 // User Routes
@@ -34,7 +35,22 @@ Route::middleware([DetectUserLanguage::class])->group(function () {
     Route::get('privacy-policy', [TosViewerController::class, 'privacy'])->name('privacy');
     Route::get('terms-of-use', [TosViewerController::class, 'terms'])->name('terms');
     Route::get('refund-policy', [TosViewerController::class, 'refund'])->name('refund');
+
+    // Payment Routes
+    Route::prefix('payment')->name('payment.')->group(function () {
+        Route::get('checkout/{planId}', [PaymentController::class, 'checkout'])->name('checkout');
+        Route::post('process', [PaymentController::class, 'processCheckout'])->name('process');
+        Route::get('success', [PaymentController::class, 'success'])->name('success');
+        Route::get('cancel', [PaymentController::class, 'cancel'])->name('cancel');
+        Route::get('transactions', [PaymentController::class, 'transactions'])->name('transactions');
+        Route::get('transactions/{id}', [PaymentController::class, 'transactionDetail'])->name('transaction.detail');
+    });
+
+    // Payment Webhook (outside DetectUserLanguage middleware for API compatibility)
 });
+
+// Payment Webhook Route (public, no language middleware)
+Route::post('webhooks/payment', [PaymentController::class, 'webhook'])->name('payment.webhook');
 
 // Admin Routes
 Route::prefix('backend')->name('admin.')->group(function () {

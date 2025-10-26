@@ -140,8 +140,7 @@
                                 </div>
 
                                 <div class="pricing-button">
-                                    <a
-                                        href="https://wa.me/{{ whatsapp() }}?text={{ urlencode(whatsappText()) }}">{{ __('buttons.get_now') }}</a>
+                                    <a href="{{ route('payment.checkout', $plan->id) }}">{{ __('buttons.get_now') }}</a>
                                 </div>
                             </div>
                             <div class="pricing-footer"></div>

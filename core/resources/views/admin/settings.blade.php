@@ -90,6 +90,124 @@
                                         </div>
                                     </div>
 
+                                    <div class="hr-text my-4 text-cyan">Payment Gateway Settings</div>
+                                    
+                                    @php
+                                        $hasApiKey = !empty($settings['senypro_api_key'] ?? '');
+                                        $hasApiSecret = !empty($settings['senypro_api_secret'] ?? '');
+                                        $isEnabled = ($settings['senypro_enabled'] ?? '0') == '1';
+                                        $isFullyConfigured = $hasApiKey && $hasApiSecret && $isEnabled;
+                                    @endphp
+                                    
+                                    @if($isFullyConfigured)
+                                        <div class="alert alert-success mb-3">
+                                            <div class="d-flex">
+                                                <div>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M5 12l5 5l10 -10"></path>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <h4 class="alert-title">SenyPro Payment Gateway is Active!</h4>
+                                                    <div class="text-muted">Your payment gateway is properly configured and enabled.</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @elseif($hasApiKey || $hasApiSecret)
+                                        <div class="alert alert-warning mb-3">
+                                            <div class="d-flex">
+                                                <div>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M12 9v2m0 4v.01"></path>
+                                                        <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75"></path>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <h4 class="alert-title">Payment Gateway Incomplete</h4>
+                                                    <div class="text-muted">Please provide both API Key and API Secret, and enable the gateway.</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @else
+                                        <div class="alert alert-info mb-3">
+                                            <div class="d-flex">
+                                                <div>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <circle cx="12" cy="12" r="9"></circle>
+                                                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                                        <polyline points="11 12 12 12 12 16 13 16"></polyline>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <h4 class="alert-title">Configure SenyPro Payment Gateway</h4>
+                                                    <div class="text-muted">Enter your SenyPro API credentials below to start accepting payments.</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    
+                                    <div class="row">
+                                        <!-- SenyPro API Key -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">SenyPro API Key:</label>
+                                                <input type="text" class="form-control" name="senypro_api_key"
+                                                    value="{{ old('senypro_api_key', $settings['senypro_api_key'] ?? '') }}"
+                                                    placeholder="sk_xxxxxxxxxxxxx">
+                                                <small class="form-text text-muted">
+                                                    Your SenyPro API Key (starts with sk_)
+                                                </small>
+                                            </div>
+                                        </div>
+
+                                        <!-- SenyPro API Secret -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">SenyPro API Secret:</label>
+                                                <input type="text" class="form-control" name="senypro_api_secret"
+                                                    value="{{ old('senypro_api_secret', $settings['senypro_api_secret'] ?? '') }}"
+                                                    placeholder="Enter your API Secret">
+                                                <small class="form-text text-muted">
+                                                    Your SenyPro API Secret key
+                                                </small>
+                                            </div>
+                                        </div>
+
+                                        <!-- SenyPro API Base URL -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">SenyPro API Base URL:</label>
+                                                <input type="text" class="form-control" name="senypro_api_base_url"
+                                                    value="{{ old('senypro_api_base_url', $settings['senypro_api_base_url'] ?? 'https://senypro.com/api/v1') }}"
+                                                    placeholder="https://senypro.com/api/v1">
+                                                <small class="form-text text-muted">
+                                                    Default: https://senypro.com/api/v1
+                                                </small>
+                                            </div>
+                                        </div>
+
+                                        <!-- Payment Gateway Status -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Payment Gateway Status:</label>
+                                                <select class="form-select" name="senypro_enabled">
+                                                    <option value="1" {{ old('senypro_enabled', $settings['senypro_enabled'] ?? '0') == '1' ? 'selected' : '' }}>
+                                                        Enabled
+                                                    </option>
+                                                    <option value="0" {{ old('senypro_enabled', $settings['senypro_enabled'] ?? '0') == '0' ? 'selected' : '' }}>
+                                                        Disabled
+                                                    </option>
+                                                </select>
+                                                <small class="form-text text-muted">
+                                                    Enable/Disable payment processing
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="hr-text my-4 text-cyan">Other Settings</div>
                                     <div class="row">
                                         <!-- Google Analytics -->

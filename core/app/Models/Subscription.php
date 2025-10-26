@@ -13,7 +13,7 @@ class Subscription extends Model
         'price',
         'status',
         'payment_method',
-        'transaction_id',
+        'transaction_id', // Now links to transactions table
         'expires_at',
     ];
 
@@ -40,11 +40,15 @@ class Subscription extends Model
         return $this->status === 'active' && now()->lt($this->expires_at);
     }
 
-    // Inside Subscription model
-public function paymentMethod()
-{
-    return $this->belongsTo(PaymentMethod::class, 'payment_method');
-}
+    // Relationship: A subscription belongs to a payment method
+    public function paymentMethod()
+    {
+        return $this->belongsTo(PaymentMethod::class, 'payment_method');
+    }
 
-
+    // Relationship: A subscription may have a transaction
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class);
+    }
 }
