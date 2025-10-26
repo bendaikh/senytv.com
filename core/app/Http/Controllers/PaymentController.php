@@ -72,10 +72,23 @@ class PaymentController extends Controller
         }
 
         try {
+            Log::info('==========================================');
+            Log::info('PAYMENT CONTROLLER: Starting payment process', [
+                'plan_id' => $request->plan_id,
+                'customer_email' => $request->email,
+            ]);
+            
             DB::beginTransaction();
 
             $plan = Plan::findOrFail($request->plan_id);
             $externalOrderId = SenyProPaymentService::generateOrderId();
+
+            Log::info('PAYMENT CONTROLLER: Plan and order ID generated', [
+                'plan_id' => $plan->id,
+                'plan_name' => $plan->name,
+                'plan_price' => $plan->price,
+                'external_order_id' => $externalOrderId,
+            ]);
 
             // Prepare order data for SenyPro API
             $orderData = $this->paymentService->prepareOrderData([
@@ -108,11 +121,23 @@ class PaymentController extends Controller
                 'webhook_url' => route('payment.webhook'),
             ]);
 
+            Log::info('PAYMENT CONTROLLER: Order data prepared, calling SenyPro API...');
+
             // Create order via SenyPro API
             $result = $this->paymentService->createOrder($orderData);
 
+            Log::info('PAYMENT CONTROLLER: SenyPro API response received', [
+                'success' => $result['success'] ?? false,
+                'has_payment_url' => isset($result['payment_url']),
+                'error_message' => $result['message'] ?? 'none',
+            ]);
+
             if (!$result['success']) {
                 DB::rollBack();
+                Log::error('PAYMENT CONTROLLER: Payment failed, rolling back', [
+                    'error' => $result['message'],
+                    'error_code' => $result['error_code'] ?? 'unknown',
+                ]);
                 return redirect()->back()
                     ->with('error', $result['message'])
                     ->withInput();
@@ -164,17 +189,30 @@ class PaymentController extends Controller
 
             DB::commit();
 
+            Log::info('PAYMENT CONTROLLER: Transaction created and committed successfully', [
+                'transaction_id' => $transaction->id,
+                'request_id' => $result['request_id'],
+                'payment_url' => $result['payment_url'],
+            ]);
+
             // Store transaction ID in session for success page
             session(['pending_transaction_id' => $transaction->id]);
+
+            Log::info('PAYMENT CONTROLLER: Redirecting customer to payment URL');
+            Log::info('==========================================');
 
             // Redirect to SenyPro payment page
             return redirect()->away($result['payment_url']);
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Payment Processing Error', [
-                'message' => $e->getMessage(),
+            Log::error('PAYMENT CONTROLLER: EXCEPTION CAUGHT', [
+                'error' => $e->getMessage(),
+                'type' => get_class($e),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
                 'trace' => $e->getTraceAsString()
             ]);
+            Log::info('==========================================');
 
             return redirect()->back()
                 ->with('error', 'An error occurred while processing your payment. Please try again.')

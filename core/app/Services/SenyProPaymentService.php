@@ -39,23 +39,51 @@ class SenyProPaymentService
     public function createOrder(array $orderData): array
     {
         try {
-            $response = Http::withHeaders([
-                'Content-Type' => 'application/json',
-                'X-API-Key' => $this->apiKey,
-                'X-API-Secret' => $this->apiSecret,
-            ])->post($this->apiBaseUrl . '/orders', $orderData);
+            Log::info('=== SENYPRO PAYMENT START ===');
+            Log::info('SenyPro: Step 1 - Preparing order creation', [
+                'api_url' => $this->apiBaseUrl . '/orders',
+                'external_order_id' => $orderData['external_order_id'] ?? 'N/A',
+                'amount' => $orderData['amount'] ?? 'N/A',
+                'customer_email' => $orderData['customer']['email'] ?? 'N/A',
+            ]);
+
+            $startTime = microtime(true);
+
+            Log::info('SenyPro: Step 2 - Sending HTTP POST request to SenyPro API...');
+            
+            $response = Http::timeout(180) // Wait up to 3 minutes
+                ->connectTimeout(30) // 30 seconds to establish connection
+                ->withHeaders([
+                    'Content-Type' => 'application/json',
+                    'X-API-Key' => $this->apiKey,
+                    'X-API-Secret' => $this->apiSecret,
+                ])->post($this->apiBaseUrl . '/orders', $orderData);
+
+            $duration = round(microtime(true) - $startTime, 2);
+            
+            Log::info('SenyPro: Step 3 - HTTP response received', [
+                'duration_seconds' => $duration,
+                'status_code' => $response->status()
+            ]);
 
             $result = $response->json();
             $httpCode = $response->status();
 
-            // Log the response for debugging
-            Log::info('SenyPro Create Order Response', [
+            Log::info('SenyPro: Step 4 - Response parsed', [
                 'status' => $httpCode,
-                'response' => $result,
-                'order_data' => $orderData
+                'success' => $result['success'] ?? false,
+                'has_payment_url' => isset($result['data']['payment_url']),
+                'has_request_id' => isset($result['request_id']),
             ]);
 
             if ($httpCode === 201 && $result['success']) {
+                Log::info('SenyPro: Step 5 - SUCCESS! Order created successfully', [
+                    'request_id' => $result['request_id'],
+                    'payment_url' => $result['data']['payment_url'] ?? 'missing',
+                    'transaction_id' => $result['data']['transaction_id'] ?? 'missing',
+                ]);
+                Log::info('=== SENYPRO PAYMENT SUCCESS ===');
+                
                 return [
                     'success' => true,
                     'request_id' => $result['request_id'],
@@ -74,11 +102,14 @@ class SenyProPaymentService
             $errorMessage = $result['message'] ?? 'Payment failed';
             $errorCode = $result['error_code'] ?? 'UNKNOWN_ERROR';
             
-            Log::error('SenyPro Create Order Failed', [
+            Log::error('SenyPro: Step 5 - FAILED! Order creation failed', [
+                'http_code' => $httpCode,
                 'error_code' => $errorCode,
                 'message' => $errorMessage,
-                'errors' => $result['errors'] ?? []
+                'errors' => $result['errors'] ?? [],
+                'full_response' => $result
             ]);
+            Log::info('=== SENYPRO PAYMENT FAILED ===');
 
             return [
                 'success' => false,
@@ -86,11 +117,30 @@ class SenyProPaymentService
                 'error_code' => $errorCode,
                 'errors' => $result['errors'] ?? []
             ];
+
+        } catch (\Illuminate\Http\Client\ConnectionException $e) {
+            Log::error('SenyPro: CONNECTION EXCEPTION - Could not connect to API', [
+                'error' => $e->getMessage(),
+                'type' => 'ConnectionException',
+                'api_url' => $this->apiBaseUrl . '/orders'
+            ]);
+            Log::info('=== SENYPRO PAYMENT CONNECTION ERROR ===');
+
+            return [
+                'success' => false,
+                'message' => 'Could not connect to payment gateway. Please try again.',
+                'error_code' => 'CONNECTION_ERROR'
+            ];
+
         } catch (\Exception $e) {
-            Log::error('SenyPro API Exception', [
-                'message' => $e->getMessage(),
+            Log::error('SenyPro: UNEXPECTED EXCEPTION', [
+                'error' => $e->getMessage(),
+                'type' => get_class($e),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
                 'trace' => $e->getTraceAsString()
             ]);
+            Log::info('=== SENYPRO PAYMENT EXCEPTION ===');
 
             return [
                 'success' => false,
