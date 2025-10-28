@@ -147,8 +147,9 @@ class PaymentController extends Controller
             $user = User::firstOrCreate(
                 ['email' => $request->email],
                 [
-                    'name' => $request->first_name . ' ' . $request->last_name,
-                    'password' => bcrypt(uniqid()), // Random password for guest users
+                    'full_name' => $request->first_name . ' ' . $request->last_name,
+                    'phone_number' => $request->phone,
+                    'country' => $request->country,
                 ]
             );
 

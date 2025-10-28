@@ -355,6 +355,35 @@ Content-Type: application/json
 2. Check that credentials are active and not expired
 3. Contact SenyPro support if credentials need re-activation
 
+### Issue: "Field 'full_name' doesn't have a default value" Error
+
+**When you see this error in Senypro logs:**
+```
+SQLSTATE[HY000]: General error: 1364 Field 'full_name' doesn't have a default value
+insert into `users` (`email`, `updated_at`, `created_at`)
+```
+
+This means the Senypro application is trying to create a user without providing the `full_name` field.
+
+**Fixed in senytv.com (this project):**
+- Updated `PaymentController::processCheckout()` to include `full_name`, `phone_number`, and `country` when creating users
+- Changed from using `'name'` field to `'full_name'` to match the User model
+
+**Required Fix in Senypro:**
+If you're running your own Senypro instance, you need to make the `full_name` field optional:
+
+```sql
+-- Connect to your Senypro database and run:
+ALTER TABLE users MODIFY COLUMN full_name varchar(255) DEFAULT '';
+```
+
+Or better yet, ensure the user creation logic in Senypro concatenates `first_name` and `last_name`:
+
+```php
+// In Senypro's user creation logic:
+'full_name' => $first_name . ' ' . $last_name
+```
+
 ---
 
 ## 📊 Database Schema
