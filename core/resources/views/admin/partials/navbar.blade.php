@@ -113,7 +113,7 @@
         </li>
 
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle {{ request()->routeIs('admin.settings.*') || request()->routeIs('admin.landing-page.*') || request()->routeIs('admin.payment-methods.*') || request()->routeIs('admin.tos.*') || request()->routeIs('admin.languages.*') ? 'active' : '' }}" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+            <a class="nav-link dropdown-toggle {{ request()->routeIs('admin.settings.*') || request()->routeIs('admin.landing-page.*') || request()->routeIs('admin.payment-methods.*') || request()->routeIs('admin.tos.*') || request()->routeIs('admin.languages.*') || request()->routeIs('admin.color-setup.*') ? 'active' : '' }}" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
                 <span class="nav-link-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" />
@@ -126,6 +126,7 @@
                 <a class="dropdown-item" href="{{ route('admin.landing-page.index') }}">Landing Page</a>
                 <a class="dropdown-item" href="{{ route('admin.payment-methods.index') }}">Payment Setup</a>
                 <a class="dropdown-item" href="{{ route('admin.settings.edit') }}">System Settings</a>
+                <a class="dropdown-item" href="{{ route('admin.color-setup.index') }}">Color Setup</a>
                 <a class="dropdown-item" href="{{ route('admin.tos.index') }}">Terms of Service</a>
                 <a class="dropdown-item" href="{{ route('admin.languages.index') }}">Languages</a>
             </div>

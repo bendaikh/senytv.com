@@ -88,6 +88,9 @@ Route::prefix('backend')->name('admin.')->group(function () {
         Route::get('settings', [SettingController::class, 'edit'])->name('settings.edit');
         Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
 
+        Route::get('color-setup', [SettingController::class, 'colorSetup'])->name('color-setup.index');
+        Route::put('color-setup', [SettingController::class, 'updateColor'])->name('color-setup.update');
+
         Route::post('social-media', [SettingController::class, 'socialMediaStore'])->name('social-media.store');
         Route::delete('social-media/{id}', [SettingController::class, 'socialMediaDestroy'])->name('social-media.destroy');
 

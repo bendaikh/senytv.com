@@ -32,6 +32,7 @@ function loadSettings()
                 'best_section_img',
                 'our_partners_img',
                 'social_media_links',
+                'primary_color',
             ])->pluck('value', 'key')->toArray();
         });
     }

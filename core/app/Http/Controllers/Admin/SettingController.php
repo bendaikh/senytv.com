@@ -118,4 +118,21 @@ class SettingController extends Controller
         return redirect()->back()->with('success', 'Social media link deleted.');
     }
 
+    public function colorSetup()
+    {
+        $primaryColor = setting('primary_color', '#ffbf23');
+        return view('admin.color-setup', compact('primaryColor'));
+    }
+
+    public function updateColor(Request $request)
+    {
+        $validated = $request->validate([
+            'primary_color' => 'required|string|regex:/^#[a-fA-F0-9]{6}$/',
+        ]);
+
+        setSetting('primary_color', $validated['primary_color']);
+
+        return redirect()->route('admin.color-setup.index')->with('success', 'Color updated successfully!');
+    }
+
 }
