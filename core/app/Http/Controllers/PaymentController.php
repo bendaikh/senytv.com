@@ -36,8 +36,11 @@ class PaymentController extends Controller
 
         $plan = Plan::findOrFail($planId);
         $activeTemplate = $request->attributes->get('activeTemplate') ?? 'templates.amber';
+        
+        // Load all countries from JSON file
+        $countries = json_decode(file_get_contents(storage_path('app/private/countries.json')), true);
 
-        return view("{$activeTemplate}.checkout", compact('plan'));
+        return view("{$activeTemplate}.checkout", compact('plan', 'countries'));
     }
 
     /**

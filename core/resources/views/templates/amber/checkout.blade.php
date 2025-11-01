@@ -137,15 +137,12 @@
                                             <select class="form-select @error('country') is-invalid @enderror" 
                                                     id="country" name="country" required>
                                                 <option value="">{{ __('Select Country') }}</option>
-                                                <option value="US" {{ old('country') == 'US' ? 'selected' : '' }}>United States</option>
-                                                <option value="CA" {{ old('country') == 'CA' ? 'selected' : '' }}>Canada</option>
-                                                <option value="GB" {{ old('country') == 'GB' ? 'selected' : '' }}>United Kingdom</option>
-                                                <option value="FR" {{ old('country') == 'FR' ? 'selected' : '' }}>France</option>
-                                                <option value="DE" {{ old('country') == 'DE' ? 'selected' : '' }}>Germany</option>
-                                                <option value="ES" {{ old('country') == 'ES' ? 'selected' : '' }}>Spain</option>
-                                                <option value="IT" {{ old('country') == 'IT' ? 'selected' : '' }}>Italy</option>
-                                                <option value="AU" {{ old('country') == 'AU' ? 'selected' : '' }}>Australia</option>
-                                                <!-- Add more countries as needed -->
+                                                @foreach ($countries as $country)
+                                                    <option value="{{ strtoupper($country['code']) }}" 
+                                                        {{ old('country') == strtoupper($country['code']) ? 'selected' : '' }}>
+                                                        {{ $country['name'] }}
+                                                    </option>
+                                                @endforeach
                                             </select>
                                             @error('country')
                                                 <div class="invalid-feedback">{{ $message }}</div>
