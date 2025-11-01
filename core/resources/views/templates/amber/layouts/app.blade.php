@@ -147,6 +147,95 @@
         .articles .blog-card .card-body .meta::before {
             background-color: var(--primary-color) !important;
         }
+        
+        /* Override SVG icon colors */
+        .social-icon svg path {
+            fill: var(--primary-color) !important;
+        }
+        
+        .social-icon svg {
+            color: var(--primary-color);
+        }
+        
+        /* Social section icons - use JavaScript to change colors */
+        
+        /* Handle SVG backgrounds with primary color */
+        [style*="header-shape"] {
+            filter: hue-rotate(0deg) saturate(1);
+        }
+        
+        /* Override any inline SVG fills that might be in the DOM */
+        svg path[fill="#FFBF23"],
+        svg path[fill="#ffbf23"],
+        svg path[fill*="FFBF23"] {
+            fill: var(--primary-color) !important;
+        }
+        
+        svg path[stroke="#FFBF23"],
+        svg path[stroke="#ffbf23"],
+        svg path[stroke*="FFBF23"] {
+            stroke: var(--primary-color) !important;
+        }
+        
+        /* Additional yellow color overrides for decorative elements */
+        .corner:hover::before {
+            background-color: var(--primary-color) !important;
+        }
+        
+        /* Pricing card bar (ribbon badge) */
+        section.plans .pricing-card .pricing-bar {
+            background-color: var(--primary-color) !important;
+        }
+        
+        /* Scrollbar thumb */
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color) !important;
+        }
+        
+        /* Additional rgba yellow overrides */
+        section.best .our-features .parallelogram-wrapper:hover .step-content svg path {
+            fill: var(--primary-color) !important;
+        }
+        
+        /* WhatsApp button background */
+        .whatsapp {
+            background-color: var(--primary-color) !important;
+        }
+        
+        /* Pagination active state */
+        .pagination .active {
+            background-color: var(--primary-color) !important;
+        }
+        
+        /* Blog card border */
+        .articles .blog-card {
+            border-bottom-color: var(--primary-color) !important;
+        }
+        
+        /* Channels section accordion border */
+        section.channels .channels-list .accordion-button {
+            border-top-color: var(--primary-color) !important;
+        }
+        
+        /* Loader border color */
+        .loader {
+            border-bottom-color: var(--primary-color) !important;
+        }
+        
+        /* Ensure header-shape and pricing-bg SVG backgrounds are handled */
+        .HeroSlider::after,
+        section.plans::after,
+        footer::after,
+        .blog::after {
+            background-image: url("../images/shape/header-shape.svg") !important;
+            filter: none !important;
+            -webkit-mask-image: none !important;
+            mask-image: none !important;
+        }
+        
+        section.plans .pricing-card .pricing-footer {
+            background-image: url("../images/shape/pricing-bg.svg") !important;
+        }
     </style>
     @yield('styles')
     @yield('meta')
@@ -194,6 +283,246 @@
                 script.defer = true;
                 document.body.appendChild(script);
             }, 300);
+        });
+
+        // Change SVG icon colors in social section and hero section
+        document.addEventListener("DOMContentLoaded", function() {
+            const primaryColor = '{{ $primaryColor }}';
+            
+            // Function to replace yellow colors in SVG content
+            function replaceSvgColors(svgText, targetColor) {
+                // Replace hardcoded yellow colors with primary color
+                const yellowColors = [
+                    '#FFBF23', '#ffbf23', '#FFB500', '#ffb500', 
+                    '#FEB500', '#feb500', '#FEBC58', '#febc58',
+                    'FFBF23', 'ffbf23', 'FFB500', 'ffb500',
+                    'FEB500', 'feb500', 'FEBC58', 'febc58'
+                ];
+                
+                let modifiedSvg = svgText;
+                yellowColors.forEach(yellow => {
+                    // Replace fill colors
+                    const fillRegex = new RegExp(`fill=["']?${yellow}["']?`, 'gi');
+                    modifiedSvg = modifiedSvg.replace(fillRegex, `fill="${targetColor}"`);
+                    
+                    // Replace stroke colors
+                    const strokeRegex = new RegExp(`stroke=["']?${yellow}["']?`, 'gi');
+                    modifiedSvg = modifiedSvg.replace(strokeRegex, `stroke="${targetColor}"`);
+                });
+                
+                return modifiedSvg;
+            }
+            
+            // Function to convert img to inline SVG with primary color
+            function convertSvgIcon(img) {
+                if (img.src && (img.src.endsWith('.svg') || img.src.includes('.svg'))) {
+                    fetch(img.src)
+                        .then(response => response.text())
+                        .then(svgText => {
+                            // Replace yellow colors in SVG text before parsing
+                            const modifiedSvg = replaceSvgColors(svgText, primaryColor);
+                            
+                            // Create a temporary container
+                            const tempDiv = document.createElement('div');
+                            tempDiv.innerHTML = modifiedSvg;
+                            const svgElement = tempDiv.querySelector('svg');
+                            
+                            if (svgElement) {
+                                // Set primary color to all paths and other elements (safety net)
+                                const paths = svgElement.querySelectorAll('path, circle, rect, polygon, ellipse, line');
+                                paths.forEach(element => {
+                                    // Only change fill if it's a yellow color or not white
+                                    const currentFill = element.getAttribute('fill');
+                                    if (currentFill && 
+                                        currentFill.toLowerCase() !== '#ffffff' && 
+                                        currentFill.toLowerCase() !== 'white' &&
+                                        currentFill.toLowerCase() !== 'none' &&
+                                        currentFill.toLowerCase() !== 'transparent') {
+                                        // Check if it's a yellow color
+                                        const isYellow = currentFill.match(/#(ff|fe)?(bf|b5|bc)?(23|00|58)/i);
+                                        if (isYellow || currentFill === 'currentColor') {
+                                            element.setAttribute('fill', primaryColor);
+                                            element.style.fill = primaryColor;
+                                        }
+                                    }
+                                    // Update stroke if it's yellow
+                                    const currentStroke = element.getAttribute('stroke');
+                                    if (currentStroke && 
+                                        currentStroke.toLowerCase() !== '#ffffff' && 
+                                        currentStroke.toLowerCase() !== 'white' &&
+                                        currentStroke.toLowerCase() !== 'none') {
+                                        const isYellow = currentStroke.match(/#(ff|fe)?(bf|b5|bc)?(23|00|58)/i);
+                                        if (isYellow) {
+                                            element.setAttribute('stroke', primaryColor);
+                                            element.style.stroke = primaryColor;
+                                        }
+                                    }
+                                });
+                                
+                                // Set width and height from original img
+                                svgElement.setAttribute('width', img.width || img.naturalWidth || '40');
+                                svgElement.setAttribute('height', img.height || img.naturalHeight || '40');
+                                svgElement.style.width = img.style.width || (img.width ? img.width + 'px' : '40px');
+                                svgElement.style.height = img.style.height || (img.height ? img.height + 'px' : '40px');
+                                svgElement.style.display = 'block';
+                                svgElement.style.margin = '0 auto';
+                                
+                                // Copy classes from img to svg
+                                if (img.className) {
+                                    svgElement.className = img.className;
+                                }
+                                
+                                // Replace img with inline SVG
+                                img.parentNode.replaceChild(svgElement, img);
+                            }
+                        })
+                        .catch(err => console.error('Error loading SVG:', err));
+                }
+            }
+            
+            // Function to handle SVG backgrounds in pseudo-elements by injecting inline SVG
+            function handleSvgBackgrounds() {
+                // Handle HeroSlider::after (header-shape at bottom)
+                const heroSlider = document.querySelector('.HeroSlider');
+                if (heroSlider) {
+                    const headerShapeUrl = '{{ asset("assets/" . $activeTemplatePath . "/images/shape/header-shape.svg") }}';
+                    fetch(headerShapeUrl)
+                        .then(response => response.text())
+                        .then(svgText => {
+                            const modifiedSvg = replaceSvgColors(svgText, primaryColor);
+                            const wrapper = document.createElement('div');
+                            wrapper.innerHTML = modifiedSvg;
+                            const svgElement = wrapper.querySelector('svg');
+                            if (svgElement) {
+                                svgElement.style.cssText = 'position: absolute; left: 0; bottom: -1px; width: 100%; height: clamp(150px, 25vh, 389px); z-index: 2; pointer-events: none;';
+                                heroSlider.appendChild(svgElement);
+                            }
+                        })
+                        .catch(() => {}); // Fail silently
+                }
+                
+                // Handle section.plans::after (header-shape inverted at top)
+                const plansSection = document.querySelector('section.plans');
+                if (plansSection) {
+                    const headerShapeUrl = '{{ asset("assets/" . $activeTemplatePath . "/images/shape/header-shape.svg") }}';
+                    fetch(headerShapeUrl)
+                        .then(response => response.text())
+                        .then(svgText => {
+                            const modifiedSvg = replaceSvgColors(svgText, primaryColor);
+                            const wrapper = document.createElement('div');
+                            wrapper.innerHTML = modifiedSvg;
+                            const svgElement = wrapper.querySelector('svg');
+                            if (svgElement) {
+                                svgElement.style.cssText = 'position: absolute; left: 0; top: -1px; width: 100%; height: clamp(150px, 25vh, 389px); z-index: 2; transform: scaleY(-1); pointer-events: none;';
+                                plansSection.appendChild(svgElement);
+                            }
+                        })
+                        .catch(() => {});
+                }
+                
+                // Handle footer::after (header-shape inverted at top)
+                const footer = document.querySelector('footer');
+                if (footer) {
+                    const headerShapeUrl = '{{ asset("assets/" . $activeTemplatePath . "/images/shape/header-shape.svg") }}';
+                    fetch(headerShapeUrl)
+                        .then(response => response.text())
+                        .then(svgText => {
+                            const modifiedSvg = replaceSvgColors(svgText, primaryColor);
+                            const wrapper = document.createElement('div');
+                            wrapper.innerHTML = modifiedSvg;
+                            const svgElement = wrapper.querySelector('svg');
+                            if (svgElement) {
+                                svgElement.style.cssText = 'position: absolute; left: 0; top: -1px; width: 100%; height: clamp(150px, 25vh, 389px); z-index: 2; transform: scaleY(-1); pointer-events: none;';
+                                footer.appendChild(svgElement);
+                            }
+                        })
+                        .catch(() => {});
+                }
+                
+                // Handle .blog::after (header-shape at bottom)
+                const blogSection = document.querySelector('.blog');
+                if (blogSection) {
+                    const headerShapeUrl = '{{ asset("assets/" . $activeTemplatePath . "/images/shape/header-shape.svg") }}';
+                    fetch(headerShapeUrl)
+                        .then(response => response.text())
+                        .then(svgText => {
+                            const modifiedSvg = replaceSvgColors(svgText, primaryColor);
+                            const wrapper = document.createElement('div');
+                            wrapper.innerHTML = modifiedSvg;
+                            const svgElement = wrapper.querySelector('svg');
+                            if (svgElement) {
+                                svgElement.style.cssText = 'position: absolute; left: 0; bottom: -1%; width: 100%; height: 188px; z-index: 2; pointer-events: none;';
+                                blogSection.appendChild(svgElement);
+                            }
+                        })
+                        .catch(() => {});
+                }
+                
+                // Handle pricing-card .pricing-footer (pricing-bg.svg)
+                const pricingCards = document.querySelectorAll('section.plans .pricing-card .pricing-footer');
+                pricingCards.forEach(card => {
+                    const pricingBgUrl = '{{ asset("assets/" . $activeTemplatePath . "/images/shape/pricing-bg.svg") }}';
+                    fetch(pricingBgUrl)
+                        .then(response => response.text())
+                        .then(svgText => {
+                            const modifiedSvg = replaceSvgColors(svgText, primaryColor);
+                            const wrapper = document.createElement('div');
+                            wrapper.innerHTML = modifiedSvg;
+                            const svgElement = wrapper.querySelector('svg');
+                            if (svgElement) {
+                                svgElement.style.cssText = 'position: absolute; left: 0; bottom: 0; width: 100%; height: 28px; pointer-events: none;';
+                                card.appendChild(svgElement);
+                            }
+                        })
+                        .catch(() => {});
+                });
+            }
+            
+            // Call the function to handle SVG backgrounds
+            handleSvgBackgrounds();
+            
+            // Handle social section icons
+            const socialIcons = document.querySelectorAll('section.social .share-icon img');
+            socialIcons.forEach(convertSvgIcon);
+            
+            // Handle hero section caption icons
+            const captionIcons = document.querySelectorAll('.caption-icon img');
+            captionIcons.forEach(convertSvgIcon);
+            
+            // Handle header-shape SVG (curved separator)
+            const headerShapes = document.querySelectorAll('img[src*="header-shape"], img[src*="shape/header"]');
+            headerShapes.forEach(convertSvgIcon);
+            
+            // Handle all other SVG images
+            const allSvgs = document.querySelectorAll('img[src$=".svg"]');
+            allSvgs.forEach(function(img) {
+                if (img.dataset.processed !== 'true') {
+                    img.dataset.processed = 'true';
+                    convertSvgIcon(img);
+                }
+            });
+            
+            // Handle inline SVG elements that might already be in the DOM
+            const inlineSvgs = document.querySelectorAll('svg');
+            inlineSvgs.forEach(function(svg) {
+                const paths = svg.querySelectorAll('path, circle, rect, polygon, ellipse, line');
+                paths.forEach(function(element) {
+                    const fill = element.getAttribute('fill');
+                    const stroke = element.getAttribute('stroke');
+                    
+                    if (fill && (fill.match(/#(ff|fe)?(bf|b5|bc)?(23|00|58)/i) || fill === 'currentColor')) {
+                        if (fill.toLowerCase() !== '#ffffff' && fill.toLowerCase() !== 'white' && fill.toLowerCase() !== 'none') {
+                            element.setAttribute('fill', primaryColor);
+                        }
+                    }
+                    
+                    if (stroke && stroke.match(/#(ff|fe)?(bf|b5|bc)?(23|00|58)/i)) {
+                        if (stroke.toLowerCase() !== '#ffffff' && stroke.toLowerCase() !== 'white' && stroke.toLowerCase() !== 'none') {
+                            element.setAttribute('stroke', primaryColor);
+                        }
+                    }
+                });
+            });
         });
     </script>
 
