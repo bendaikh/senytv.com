@@ -5,8 +5,8 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-warning text-dark">
+                <div class="card shadow-sm checkout-card">
+                    <div class="card-header checkout-header">
                         <h3 class="mb-0">{{ __('Checkout') }}</h3>
                     </div>
                     <div class="card-body p-4">
@@ -44,7 +44,7 @@
                                         <hr>
                                         <div class="d-flex justify-content-between">
                                             <strong>{{ __('Total') }}:</strong>
-                                            <strong class="text-warning">${{ number_format($plan->price, 2) }}</strong>
+                                            <strong class="checkout-total">${{ number_format($plan->price, 2) }}</strong>
                                         </div>
                                     </div>
                                 </div>
@@ -162,7 +162,7 @@
                                     </div>
 
                                     <div class="d-grid gap-2 mt-4">
-                                        <button type="submit" class="btn btn-warning btn-lg">
+                                        <button type="submit" class="btn btn-lg checkout-btn">
                                             {{ __('Proceed to Payment') }} - ${{ number_format($plan->price, 2) }}
                                         </button>
                                         <a href="{{ route('home') }}" class="btn btn-outline-secondary">
@@ -179,29 +179,69 @@
     </div>
 </section>
 
+@php
+    $primaryColor = setting('primary_color', '#ffbf23');
+    $hex = str_replace('#', '', $primaryColor);
+    $r = hexdec(substr($hex, 0, 2));
+    $g = hexdec(substr($hex, 2, 2));
+    $b = hexdec(substr($hex, 4, 2));
+    $primaryRgba025 = "rgba($r, $g, $b, 0.25)";
+@endphp
 <style>
+/* Header/Navbar styling for checkout page */
+nav#navbar {
+    background-color: var(--primary-color) !important;
+}
+
 .checkout-section {
     min-height: 80vh;
     background: #f8f9fa;
+    margin-top: 3rem;
+    padding-top: 3rem !important;
 }
-.card {
+.checkout-card {
     border: none;
     border-radius: 10px;
+    margin-top: 2rem;
 }
-.card-header {
+.checkout-header {
+    background: var(--primary-color) !important;
+    color: #fff;
     border-radius: 10px 10px 0 0 !important;
+    padding: 1.25rem 1.5rem;
+}
+.checkout-header h3 {
+    color: #fff;
+    font-weight: 600;
+}
+.card-body {
+    padding: 1.5rem;
 }
 .form-label {
     font-weight: 500;
     margin-bottom: 0.5rem;
 }
-.btn-warning {
-    background: #ffbf23;
+.checkout-total {
+    color: var(--primary-color) !important;
+    font-size: 1.1rem;
+}
+.checkout-btn {
+    background: var(--primary-color) !important;
     border: none;
     font-weight: 600;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    transition: opacity 0.3s ease;
 }
-.btn-warning:hover {
-    background: #e6ab1f;
+.checkout-btn:hover {
+    opacity: 0.9;
+    background: var(--primary-color) !important;
+    color: #fff;
+}
+.checkout-btn:focus {
+    background: var(--primary-color) !important;
+    color: #fff;
+    box-shadow: 0 0 0 0.25rem {{ $primaryRgba025 }};
 }
 </style>
 @endsection
