@@ -1,10 +1,9 @@
-@extends($activeTemplate . '.layouts.app')
+@extends($activeTemplate . '.layouts.dashboard')
 
 @section('content')
-<section class="ticket-create-section py-5">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
                 <div class="card shadow-sm">
                     <div class="card-header bg-warning text-dark">
                         <h3 class="mb-0">{{ __('Create Support Ticket') }}</h3>
@@ -61,16 +60,11 @@
                         </form>
                     </div>
                 </div>
-            </div>
         </div>
     </div>
-</section>
+</div>
 
 <style>
-.ticket-create-section {
-    min-height: 80vh;
-    background: #f8f9fa;
-}
 .card {
     border: none;
     border-radius: 10px;

@@ -1,19 +1,18 @@
-@extends($activeTemplate . '.layouts.app')
+@extends($activeTemplate . '.layouts.dashboard')
 
 @section('content')
-<section class="tickets-section py-5">
-    <div class="container">
-        <div class="row mb-4">
-            <div class="col-12 d-flex justify-content-between align-items-center">
-                <div>
-                    <h2 class="mb-0">{{ __('Support Tickets') }}</h2>
-                    <p class="text-muted">{{ __('Manage your support tickets and requests.') }}</p>
-                </div>
-                <a href="{{ route('customer.tickets.create') }}" class="btn btn-warning">
-                    {{ __('Create New Ticket') }}
-                </a>
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <div>
+                <h3 class="mb-0">{{ __('Support Tickets') }}</h3>
+                <p class="text-muted mb-0">{{ __('Manage your support tickets and requests.') }}</p>
             </div>
+            <a href="{{ route('customer.tickets.create') }}" class="btn btn-warning">
+                {{ __('Create New Ticket') }}
+            </a>
         </div>
+    </div>
 
         <div class="row">
             <div class="col-12">
@@ -96,14 +95,9 @@
                 </div>
             </div>
         </div>
-    </div>
-</section>
+</div>
 
 <style>
-.tickets-section {
-    min-height: 80vh;
-    background: #f8f9fa;
-}
 .card {
     border: none;
     border-radius: 10px;

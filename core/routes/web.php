@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\TosController;
 use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\FrontendManagementController;
 use App\Http\Controllers\Admin\ChannelsListController;
+use App\Http\Controllers\Admin\TicketController;
 use App\Http\Controllers\TosViewerController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Customer\AuthController as CustomerAuthController;
@@ -103,7 +104,11 @@ Route::prefix('backend')->name('admin.')->group(function () {
             'payment-methods' => PaymentMethodController::class,
             'sliders' => FrontendManagementController::class,
             'channels' => ChannelsListController::class,
+            'tickets' => TicketController::class,
         ]);
+
+        // Ticket update route (PUT method)
+        Route::put('tickets/{ticket}', [TicketController::class, 'update'])->name('tickets.update');
 
         Route::resource('languages', ContentController::class)->only(['index']);
         Route::put('languages/{language}/{file}', [ContentController::class, 'update'])->name('languages.update');

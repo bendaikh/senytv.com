@@ -1,14 +1,7 @@
-@extends($activeTemplate . '.layouts.app')
+@extends($activeTemplate . '.layouts.dashboard')
 
 @section('content')
-<section class="payments-section py-5">
-    <div class="container">
-        <div class="row mb-4">
-            <div class="col-12">
-                <h2 class="mb-0">{{ __('Payment History') }}</h2>
-                <p class="text-muted">{{ __('View all your transaction history.') }}</p>
-            </div>
-        </div>
+<div class="container-fluid">
 
         <div class="row">
             <div class="col-12">
@@ -92,14 +85,9 @@
                 </div>
             </div>
         </div>
-    </div>
-</section>
+</div>
 
 <style>
-.payments-section {
-    min-height: 80vh;
-    background: #f8f9fa;
-}
 .card {
     border: none;
     border-radius: 10px;

@@ -1,10 +1,9 @@
-@extends($activeTemplate . '.layouts.app')
+@extends($activeTemplate . '.layouts.dashboard')
 
 @section('content')
-<section class="ticket-show-section py-5">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
                 <div class="card shadow-sm mb-3">
                     <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
                         <div>
@@ -65,16 +64,11 @@
                         {{ __('Back to Tickets') }}
                     </a>
                 </div>
-            </div>
         </div>
     </div>
-</section>
+</div>
 
 <style>
-.ticket-show-section {
-    min-height: 80vh;
-    background: #f8f9fa;
-}
 .card {
     border: none;
     border-radius: 10px;

@@ -1,9 +1,9 @@
 @extends($activeTemplate . '.layouts.app')
 
 @section('content')
-<section class="auth-section py-5">
+<section class="auth-section">
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center pt-5 pb-5">
             <div class="col-md-8 col-lg-7">
                 <div class="card shadow-sm">
                     <div class="card-header bg-warning text-dark text-center">
@@ -95,10 +95,13 @@
 .auth-section {
     min-height: 80vh;
     background: #f8f9fa;
+    padding-top: 5rem !important;
+    padding-bottom: 4rem !important;
 }
 .card {
     border: none;
     border-radius: 10px;
+    margin-top: 2rem;
 }
 .btn-warning {
     background: #ffbf23;
@@ -107,6 +110,12 @@
 }
 .btn-warning:hover {
     background: #e6ab1f;
+}
+@media (max-width: 768px) {
+    .auth-section {
+        padding-top: 3rem !important;
+        padding-bottom: 2rem !important;
+    }
 }
 </style>
 @endsection

@@ -14,14 +14,6 @@ use App\Models\Ticket;
 class DashboardController extends Controller
 {
     /**
-     * Create a new controller instance.
-     */
-    public function __construct()
-    {
-        $this->middleware('auth:web');
-    }
-
-    /**
      * Show customer dashboard
      */
     public function index(Request $request): View

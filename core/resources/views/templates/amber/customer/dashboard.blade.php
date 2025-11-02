@@ -1,14 +1,7 @@
-@extends($activeTemplate . '.layouts.app')
+@extends($activeTemplate . '.layouts.dashboard')
 
 @section('content')
-<section class="dashboard-section py-5">
-    <div class="container">
-        <div class="row mb-4">
-            <div class="col-12">
-                <h2 class="mb-0">{{ __('Welcome,') }} {{ $user->full_name }}</h2>
-                <p class="text-muted">{{ __('Manage your account, subscriptions, and support tickets.') }}</p>
-            </div>
-        </div>
+<div class="container-fluid">
 
         <div class="row mb-4">
             <!-- Active Subscription Card -->
@@ -73,54 +66,6 @@
             </div>
         </div>
 
-        <!-- Quick Links -->
-        <div class="row mb-4">
-            <div class="col-md-3 mb-3">
-                <a href="{{ route('customer.payments') }}" class="card shadow-sm text-decoration-none text-dark h-100">
-                    <div class="card-body text-center">
-                        <svg width="48" height="48" class="mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                        <h5>{{ __('Payments') }}</h5>
-                        <p class="text-muted mb-0">{{ __('View payment history') }}</p>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-3 mb-3">
-                <a href="{{ route('customer.plans') }}" class="card shadow-sm text-decoration-none text-dark h-100">
-                    <div class="card-body text-center">
-                        <svg width="48" height="48" class="mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                        </svg>
-                        <h5>{{ __('Plans') }}</h5>
-                        <p class="text-muted mb-0">{{ __('Manage subscriptions') }}</p>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-3 mb-3">
-                <a href="{{ route('customer.tickets') }}" class="card shadow-sm text-decoration-none text-dark h-100">
-                    <div class="card-body text-center">
-                        <svg width="48" height="48" class="mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                        <h5>{{ __('Tickets') }}</h5>
-                        <p class="text-muted mb-0">{{ __('Support requests') }}</p>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-3 mb-3">
-                <a href="{{ route('home') }}" class="card shadow-sm text-decoration-none text-dark h-100">
-                    <div class="card-body text-center">
-                        <svg width="48" height="48" class="mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                        </svg>
-                        <h5>{{ __('Home') }}</h5>
-                        <p class="text-muted mb-0">{{ __('Back to home') }}</p>
-                    </div>
-                </a>
-            </div>
-        </div>
-
         <!-- Recent Transactions -->
         @if($recentTransactions->count() > 0)
         <div class="row">
@@ -175,17 +120,13 @@
             </div>
         </div>
         @endif
-    </div>
-</section>
+</div>
 
 <style>
-.dashboard-section {
-    min-height: 80vh;
-    background: #f8f9fa;
-}
 .card {
     border: none;
     border-radius: 10px;
+    margin-bottom: 1.5rem;
 }
 .btn-warning {
     background: #ffbf23;
