@@ -84,7 +84,18 @@
                 </li>
 
                 <div class="social-share d-flex justify-content-center align-items-center flex-column d-lg-none">
-                    <a href="#pricing" class="get-started my-4">{{ __('buttons.get_started') }}</a>
+                    @auth('web')
+                        <div class="mb-3 w-100 text-center">
+                            <a href="{{ route('customer.dashboard') }}" class="btn btn-outline-primary mb-2 w-100">{{ __('Dashboard') }}</a>
+                            <form method="POST" action="{{ route('customer.logout') }}" class="d-inline w-100">
+                                @csrf
+                                <button type="submit" class="btn btn-outline-secondary w-100">{{ __('Logout') }}</button>
+                            </form>
+                        </div>
+                    @else
+                        <a href="#pricing" class="get-started my-4">{{ __('buttons.get_started') }}</a>
+                        <a href="{{ route('customer.login') }}" class="btn btn-outline-primary mb-3">{{ __('Login') }}</a>
+                    @endauth
                     <div class="d-flex align-items-center gap-4">
                         <a href="#" class="social-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"
