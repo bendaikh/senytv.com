@@ -13,6 +13,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
@@ -250,8 +253,30 @@ class PaymentController extends Controller
                         'completed_at' => $data['payment_status'] === 'Paid' ? now() : null,
                     ]);
 
-                    // If payment is successful, create or update subscription
+                    // If payment is successful, create or update subscription and ensure user account
                     if ($data['payment_status'] === 'Paid' && !$transaction->subscription_id) {
+                        // Ensure user has a password (create account if they don't have one)
+                        $user = $transaction->user;
+                        if ($user && !$user->password) {
+                            // Generate a random password
+                            $randomPassword = Str::random(12);
+                            $user->update([
+                                'password' => Hash::make($randomPassword),
+                                'email_verified_at' => now(),
+                            ]);
+                            
+                            // Store the plain password temporarily in session to show on success page
+                            session(['new_user_password' => $randomPassword, 'new_user_email' => $user->email]);
+                            
+                            // Auto-login the user
+                            Auth::guard('web')->login($user);
+                            
+                            Log::info('User account created with password after payment', [
+                                'user_id' => $user->id,
+                                'email' => $user->email,
+                            ]);
+                        }
+
                         $subscription = Subscription::create([
                             'user_id' => $transaction->user_id,
                             'plan_id' => $transaction->plan_id,
@@ -376,8 +401,24 @@ class PaymentController extends Controller
                 'completed_at' => ($payload['payment_status'] ?? '') === 'Paid' ? now() : $transaction->completed_at,
             ]);
 
-            // If payment is completed, create/update subscription
+            // If payment is completed, create/update subscription and ensure user account
             if (($payload['payment_status'] ?? '') === 'Paid' && !$transaction->subscription_id) {
+                // Ensure user has a password (create account if they don't have one)
+                $user = $transaction->user;
+                if ($user && !$user->password) {
+                    // Generate a random password
+                    $randomPassword = Str::random(12);
+                    $user->update([
+                        'password' => Hash::make($randomPassword),
+                        'email_verified_at' => now(),
+                    ]);
+                    
+                    Log::info('User account created with password after payment (webhook)', [
+                        'user_id' => $user->id,
+                        'email' => $user->email,
+                    ]);
+                }
+
                 $subscription = Subscription::create([
                     'user_id' => $transaction->user_id,
                     'plan_id' => $transaction->plan_id,

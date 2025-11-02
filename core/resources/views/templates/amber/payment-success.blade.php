@@ -46,6 +46,21 @@
                                 </div>
                             @endif
 
+                            @if(session('new_user_password'))
+                                <div class="alert alert-success">
+                                    <h5><strong>{{ __('Account Created!') }}</strong></h5>
+                                    <p>{{ __('A customer account has been created for you. Use these credentials to access your dashboard:') }}</p>
+                                    <div class="bg-white p-3 rounded mb-3">
+                                        <p class="mb-1"><strong>{{ __('Email') }}:</strong> {{ session('new_user_email') }}</p>
+                                        <p class="mb-0"><strong>{{ __('Password') }}:</strong> <code>{{ session('new_user_password') }}</code></p>
+                                    </div>
+                                    <p class="mb-0">
+                                        <small>{{ __('Please save this password or') }} 
+                                        <a href="{{ route('customer.login') }}" class="text-decoration-none">{{ __('login now') }}</a></small>
+                                    </p>
+                                </div>
+                            @endif
+
                             <p class="text-muted small mb-4">
                                 {{ __('A confirmation email has been sent to') }} <strong>{{ $transaction->customer_email }}</strong>
                             </p>
@@ -89,7 +104,12 @@
                         @endif
 
                         <div class="action-buttons mt-4">
-                            <a href="{{ route('home') }}" class="btn btn-warning me-2">
+                            @if(session('new_user_password'))
+                                <a href="{{ route('customer.dashboard') }}" class="btn btn-warning me-2">
+                                    {{ __('Go to Dashboard') }}
+                                </a>
+                            @endif
+                            <a href="{{ route('home') }}" class="btn btn-outline-secondary me-2">
                                 {{ __('Return to Home') }}
                             </a>
                             @if($transaction)

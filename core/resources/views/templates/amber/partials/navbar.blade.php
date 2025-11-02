@@ -34,9 +34,33 @@
                         d="m.73 39.197 2.674-9.957a19.46 19.46 0 0 1-2.515-9.607C.894 9.041 9.349.421 19.736.421c5.041.002 9.773 2.004 13.332 5.636 3.558 3.632 5.517 8.46 5.515 13.594-.005 10.594-8.46 19.214-18.847 19.214a18.6 18.6 0 0 1-9.014-2.34zm10.455-6.15c2.656 1.607 5.192 2.57 8.545 2.572 8.633 0 15.666-7.164 15.671-15.971.003-8.825-6.997-15.98-15.659-15.982-8.64 0-15.668 7.163-15.67 15.969-.003 3.595 1.03 6.286 2.766 9.103l-1.583 5.894zm18.045-8.828c-.117-.2-.43-.32-.903-.561-.47-.24-2.786-1.402-3.219-1.562-.43-.16-.745-.241-1.06.24-.314.48-1.217 1.563-1.491 1.883s-.55.36-1.02.12c-.471-.242-1.99-.747-3.788-2.384-1.4-1.273-2.346-2.845-2.62-3.327-.274-.48-.028-.74.206-.979.213-.215.471-.56.707-.841.24-.278.317-.479.475-.8.157-.32.08-.601-.04-.842-.118-.24-1.06-2.603-1.45-3.564-.384-.936-.772-.81-1.06-.824l-.904-.016c-.314 0-.824.12-1.255.6-.431.482-1.648 1.642-1.648 4.006s1.687 4.647 1.922 4.966c.236.32 3.32 5.17 8.044 7.25a27 27 0 0 0 2.684 1.011c1.129.366 2.156.314 2.967.191.905-.137 2.786-1.162 3.179-2.283.393-1.123.393-2.084.274-2.285" />
                 </svg>
             </a>
-            <div class="get-started ms-4">
-                <a href="#pricing">{{ __('buttons.get_started') }}</a>
-            </div>
+            @auth('web')
+                <div class="dropdown ms-4">
+                    <button class="btn btn-outline-light dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ Auth::guard('web')->user()->full_name }}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                        <li><a class="dropdown-item" href="{{ route('customer.dashboard') }}">{{ __('Dashboard') }}</a></li>
+                        <li><a class="dropdown-item" href="{{ route('customer.payments') }}">{{ __('Payments') }}</a></li>
+                        <li><a class="dropdown-item" href="{{ route('customer.plans') }}">{{ __('Plans') }}</a></li>
+                        <li><a class="dropdown-item" href="{{ route('customer.tickets') }}">{{ __('Tickets') }}</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form method="POST" action="{{ route('customer.logout') }}">
+                                @csrf
+                                <button type="submit" class="dropdown-item">{{ __('Logout') }}</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            @else
+                <div class="get-started ms-4">
+                    <a href="#pricing">{{ __('buttons.get_started') }}</a>
+                </div>
+                <div class="ms-2">
+                    <a href="{{ route('customer.login') }}" class="btn btn-sm btn-outline-light">{{ __('Login') }}</a>
+                </div>
+            @endauth
         </div>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav ms-auto align-items-center position-absolute">

@@ -21,6 +21,8 @@ use App\Http\Controllers\Admin\FrontendManagementController;
 use App\Http\Controllers\Admin\ChannelsListController;
 use App\Http\Controllers\TosViewerController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\Customer\AuthController as CustomerAuthController;
+use App\Http\Controllers\Customer\DashboardController as CustomerDashboardController;
 
 
 // User Routes
@@ -44,6 +46,27 @@ Route::middleware([DetectUserLanguage::class])->group(function () {
         Route::get('cancel', [PaymentController::class, 'cancel'])->name('cancel');
         Route::get('transactions', [PaymentController::class, 'transactions'])->name('transactions');
         Route::get('transactions/{id}', [PaymentController::class, 'transactionDetail'])->name('transaction.detail');
+    });
+
+    // Customer Authentication Routes
+    Route::middleware('guest:web')->group(function () {
+        Route::get('login', [CustomerAuthController::class, 'showLoginForm'])->name('customer.login');
+        Route::post('login', [CustomerAuthController::class, 'login'])->name('customer.login.submit');
+        Route::get('register', [CustomerAuthController::class, 'showRegisterForm'])->name('customer.register');
+        Route::post('register', [CustomerAuthController::class, 'register'])->name('customer.register.submit');
+    });
+
+    Route::middleware('auth:web')->post('logout', [CustomerAuthController::class, 'logout'])->name('customer.logout');
+
+    // Customer Dashboard Routes (Protected)
+    Route::middleware('auth:web')->prefix('customer')->name('customer.')->group(function () {
+        Route::get('dashboard', [CustomerDashboardController::class, 'index'])->name('dashboard');
+        Route::get('payments', [CustomerDashboardController::class, 'payments'])->name('payments');
+        Route::get('plans', [CustomerDashboardController::class, 'plans'])->name('plans');
+        Route::get('tickets', [CustomerDashboardController::class, 'tickets'])->name('tickets');
+        Route::get('tickets/create', [CustomerDashboardController::class, 'createTicket'])->name('tickets.create');
+        Route::post('tickets', [CustomerDashboardController::class, 'storeTicket'])->name('tickets.store');
+        Route::get('tickets/{id}', [CustomerDashboardController::class, 'showTicket'])->name('tickets.show');
     });
 
     // Payment Webhook (outside DetectUserLanguage middleware for API compatibility)

@@ -2,22 +2,48 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class User extends Model
+class User extends Authenticatable
 {
+    use Notifiable;
+
     protected $fillable = [
         'full_name',
         'email',
+        'password',
         'phone_number',
         'country',
         'ip',
+        'email_verified_at',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
     ];
 
     // Relationship: A user can have multiple subscriptions
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class);
+    }
+
+    // Relationship: A user can have multiple transactions
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    // Relationship: A user can have multiple tickets
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
     }
 
     // Relationship: A user is subscribed to one plan (if any)
