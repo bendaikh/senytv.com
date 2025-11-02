@@ -79,23 +79,6 @@
             background: {{ $primaryColor }};
         }
         
-        /* Navbar background with primary color */
-        nav#navbar {
-            background-color: var(--primary-color) !important;
-            background: var(--primary-color) !important;
-        }
-        
-        /* Ensure navbar text is visible */
-        nav#navbar .navbar-brand,
-        nav#navbar .nav-link,
-        nav#navbar .sec-title {
-            color: #fff !important;
-        }
-        
-        nav#navbar .navbar-toggler-icon {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
-        }
-        
         /* Override hardcoded yellow colors */
         nav.navbar .social-share .get-started {
             border-color: var(--primary-color) !important;
